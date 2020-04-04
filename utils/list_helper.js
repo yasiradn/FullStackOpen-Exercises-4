@@ -27,6 +27,7 @@ const favoriteBlog = (blogs) => {
   return postWithMostLike
 }
 
+//TODO: Refactor
 const mostBlogs = (blogs) => {
   const getAllAuthors = _.countBy(blogs, function(o) { return o.author; })
   const authorName = _.maxBy(_.keys(getAllAuthors), function (o) { return getAllAuthors[o]; });
@@ -36,6 +37,19 @@ const mostBlogs = (blogs) => {
   author['blogs'] = authorWithNumberOfBlog[authorName]
   return author
 }
+
+const mostLikes = (blogs) => {
+  const authorWithLikes = _(blogs)
+  .groupBy('author')
+  .map(function(group, author) {
+    return {
+      author: author,
+      likes: _.sum(_.map(group, 'likes'))
+    };
+  }).value();
+  return _.maxBy(authorWithLikes, 'likes')
+}
+
   module.exports = {
-    dummy, totalLikes,favoriteBlog, mostBlogs
+    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes
   }
