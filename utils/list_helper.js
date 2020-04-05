@@ -71,6 +71,11 @@ const blogsInDB = async () => {
   return blog.map(blog => blog.toJSON())
 }
 
+const usersInDB = async () => {
+  const user = await Blog.user({})
+  return user.map(user => user.toJSON())
+}
+
 const newBlog = {
   title: "Type wars", 
   author: "Robert C. Martin", 
@@ -83,11 +88,18 @@ const dataWithoutLike = {
   url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html"
 }
 
+const invalidUser = {
+  username: "jh",
+  password: "hesburger25",
+  name: "Robert C. Martin"
+}
+
+
 const inValidBlog = {
   author: "Robert C. Martin",
 }
 
 
   module.exports = {
-    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes, blogsInDB, initialData, newBlog,dataWithoutLike,inValidBlog
+    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes, blogsInDB, initialData, newBlog,dataWithoutLike,inValidBlog,invalidUser,usersInDB
   }

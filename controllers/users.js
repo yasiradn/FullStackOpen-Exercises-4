@@ -5,16 +5,21 @@ const bcrypt = require('bcrypt')
 
 userRouter.post('/', async(request, response) => {
     const body = request.body
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
-    const user = new User({
-        username: body.username,
-        name: body.name,
-        passwordHash
-    })
+    if(body.password.length < 3 || body.username.length < 3){
+        return response.status(400).json({error: 'Length of username or password must be grater than 3'})
+    } 
 
-    const savedUser = await user.save()
-
-    response.json(savedUser.toJSON())
+        const saltRounds = 10
+        const passwordHash = await bcrypt.hash(body.password, saltRounds)
+        const user = new User({
+            username: body.username,
+            name: body.name,
+            passwordHash
+        })
+    
+        const savedUser = await user.save()
+    
+        response.json(savedUser.toJSON())
+   
   })
   module.exports = userRouter
