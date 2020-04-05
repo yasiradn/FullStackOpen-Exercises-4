@@ -48,6 +48,16 @@ beforeEach(async () => {
         })
     
   })
+
+  describe('verifies that the unique identifier property of the blog posts is named id ', () => {
+
+      test('verify blog post has id property', async () => {
+        const data = await api.get('/api/blogs')
+        expect(data.body[0].id).toBeDefined()
+        })
+    
+  })
+  
   
   afterAll(() => {
     mongoose.connection.close()
