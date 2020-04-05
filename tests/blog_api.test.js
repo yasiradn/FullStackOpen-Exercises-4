@@ -3,31 +3,18 @@ const supertest = require('supertest')
 const app = require('../index')
 const config = require('../utils/config')
 const Blog = require('../models/blog')
-
+const listHelper = require('../utils/list_helper')
 const api = supertest(app)
 
-const initialData = [
-  {
-    title: 'This is a test',
-    author: 'Khon Doe',
-    url: 'hackernews.com',
-    likes: 10
-  },
-  {
-    title: 'This is another tes',
-    author: 'Jhon Doe',
-    url: 'cnn.com',
-    likes: 17
-  },
-]
+
 
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  let blogObject = new Blog(initialData[0])
+  let blogObject = new Blog(listHelper.initialData[0])
   await blogObject.save()
 
-  blogObject = new Blog(initialData[1])
+  blogObject = new Blog(listHelper.initialData[1])
   await blogObject.save()
 })
 
@@ -44,7 +31,7 @@ beforeEach(async () => {
 
       test('returns corrent amount of blog posts', async () => {
         const data = await api.get('/api/blogs')
-        expect(data.body).toHaveLength(initialData.length)
+        expect(data.body).toHaveLength(listHelper.initialData.length)
         })
     
   })
@@ -57,6 +44,25 @@ beforeEach(async () => {
         })
     
   })
+
+  describe('a valid blog can be added', () => {
+
+    test('add a new valid blog', async () => {
+      await api.post('/api/blogs').send(listHelper.newBlog).expect(200).expect('Content-Type', /application\/json/)
+      const lastBlog = await listHelper.blogsInDB()
+      expect(lastBlog).toHaveLength(listHelper.initialData.length + 1)
+      })
+
+      test('assing 0 to like if like is missing', async () => {
+        await api.post('/api/blogs').send(listHelper.dataWithoutLike).expect(200).expect('Content-Type', /application\/json/)
+        const lastBlog = await listHelper.blogsInDB()
+        expect(lastBlog[2].likes).toBeDefined()
+        })
+        
+        test('return 400 BAD REQUEST if title and url is missing', async () => {
+          await api.post('/api/blogs').send(listHelper.inValidBlog).expect(400)
+          })
+})
   
   
   afterAll(() => {

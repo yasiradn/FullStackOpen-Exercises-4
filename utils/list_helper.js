@@ -1,4 +1,5 @@
 var _ = require('lodash')
+const Blog = require('../models/blog')
 const dummy = (blogs) => {
     // ...
     return 1
@@ -50,6 +51,43 @@ const mostLikes = (blogs) => {
   return _.maxBy(authorWithLikes, 'likes')
 }
 
+const initialData = [
+  {
+    title: 'This is a test',
+    author: 'Khon Doe',
+    url: 'hackernews.com',
+    likes: 10
+  },
+  {
+    title: 'This is another tes',
+    author: 'Jhon Doe',
+    url: 'cnn.com',
+    likes: 17
+  },
+]
+
+const blogsInDB = async () => {
+  const blog = await Blog.find({})
+  return blog.map(blog => blog.toJSON())
+}
+
+const newBlog = {
+  title: "Type wars", 
+  author: "Robert C. Martin", 
+  url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html", 
+  likes: 2
+}
+const dataWithoutLike = {
+  title: "Type wars", 
+  author: "Robert C. Martin", 
+  url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html"
+}
+
+const inValidBlog = {
+  author: "Robert C. Martin",
+}
+
+
   module.exports = {
-    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes
+    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes, blogsInDB, initialData, newBlog,dataWithoutLike,inValidBlog
   }
