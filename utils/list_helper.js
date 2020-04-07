@@ -93,7 +93,11 @@ const invalidUser = {
   password: "hesburger25",
   name: "Robert C. Martin"
 }
-
+const validUser = {
+  username: "jhonDoe",
+  password: "hesburger25",
+  name: "Jhon Doe"
+}
 
 const inValidBlog = {
   author: "Robert C. Martin",
@@ -101,5 +105,5 @@ const inValidBlog = {
 
 
   module.exports = {
-    dummy, totalLikes,favoriteBlog, mostBlogs, mostLikes, blogsInDB, initialData, newBlog,dataWithoutLike,inValidBlog,invalidUser,usersInDB
+    dummy, validUser, totalLikes,favoriteBlog, mostBlogs, mostLikes, blogsInDB, initialData, newBlog,dataWithoutLike,inValidBlog,invalidUser,usersInDB
   }
