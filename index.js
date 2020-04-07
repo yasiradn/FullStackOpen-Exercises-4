@@ -9,6 +9,8 @@ const config = require('./utils/config')
 require('express-async-errors')
 const blogRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
+
 
 logger.info('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -24,6 +26,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login',loginRouter)
 
 app.listen(config.PORT, () => {
   logger.info(`Server running on port ${config.PORT}`)
